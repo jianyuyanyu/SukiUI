@@ -6,8 +6,7 @@
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:demo="clr-namespace:SukiUI.Demo"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                 xmlns:models="clr-namespace:SukiUI.Models;assembly=SukiUI"
-                 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+                 xmlns:suki="https://github.com/kikipoulet/SukiUI"
                  Title="SukiUI - Demo Application"
                  d:DesignHeight="450"
                  d:DesignWidth="800"
@@ -92,7 +91,7 @@
                                     
                                     <suki:GlassCard CornerRadius="15" Padding="15">
                                     <DockPanel>
-                                        <ToggleSwitch VerticalAlignment="Center" DockPanel.Dock="Right" />
+                                        <ToggleSwitch VerticalAlignment="Center" DockPanel.Dock="Right" IsChecked="True" />
                                         <TextBlock DockPanel.Dock="Bottom" Text="Disable notifications." Margin="0,8,0,0"
                                                    Foreground="{DynamicResource SukiLowText}"
                                                    VerticalAlignment="Center" />
@@ -144,7 +143,7 @@
                       Header="Switch To..."
                       ItemsSource="{Binding Themes}">
                 <MenuItem.DataTemplates>
-                    <DataTemplate DataType="{x:Type models:SukiColorTheme}">
+                    <DataTemplate DataType="{x:Type suki:SukiColorTheme}">
                         <TextBlock Foreground="{Binding PrimaryBrush}" Text="{Binding DisplayName}" />
                     </DataTemplate>
                 </MenuItem.DataTemplates>
@@ -171,7 +170,7 @@
             </MenuItem>
         </MenuItem>
     </suki:SukiWindow.MenuItems>
-    <suki:SukiSideMenu ItemsSource="{Binding DemoPages}" SelectedItem="{Binding ActivePage}">
+    <suki:SukiSideMenu IsSearchEnabled="True" ItemsSource="{Binding DemoPages}" SelectedItem="{Binding ActivePage}">
         <suki:SukiSideMenu.Styles>
             <Style Selector="Image.AppIcon">
                 <Setter Property="Transitions">
@@ -186,7 +185,7 @@
         </suki:SukiSideMenu.Styles>
         <suki:SukiSideMenu.ItemTemplate>
             <DataTemplate>
-                <suki:SukiSideMenuItem Header="{Binding DisplayName}">
+                <suki:SukiSideMenuItem Classes="Compact" Header="{Binding DisplayName}">
                     <suki:SukiSideMenuItem.Icon>
                         <avalonia:MaterialIcon Kind="{Binding Icon}" />
                     </suki:SukiSideMenuItem.Icon>
