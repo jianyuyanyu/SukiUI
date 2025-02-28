@@ -45,7 +45,7 @@ namespace SukiUI.Utilities.Effects
         {
             _shaderString = shaderString;
             _rawShaderString = rawShaderString;
-            var compiledEffect = SKRuntimeEffect.Create(_shaderString, out var errors);
+            var compiledEffect = SKRuntimeEffect.CreateShader(_shaderString, out var errors);
             Effect = compiledEffect ?? throw new ShaderCompilationException(errors);
         }
 
@@ -68,19 +68,31 @@ namespace SukiUI.Utilities.Effects
             shaderName = shaderName.ToLowerInvariant();
             if (!shaderName.EndsWith(".sksl"))
                 shaderName += ".sksl";
+
+
+
             var assembly = Assembly.GetEntryAssembly();
-            var resName = assembly!.GetManifestResourceNames()
+            var resName = assembly?.GetManifestResourceNames()
                 .FirstOrDefault(x => x.ToLowerInvariant().Contains(shaderName));
+            
             if (resName is null)
             {
                 assembly = Assembly.GetExecutingAssembly();
-                resName = assembly.GetManifestResourceNames()
+                resName = assembly?.GetManifestResourceNames()
                     .FirstOrDefault(x => x.ToLowerInvariant().Contains(shaderName));
             }
 
             if (resName is null)
+            {
+                assembly = typeof(SukiEffect).Assembly;
+                resName = assembly?.GetManifestResourceNames()
+                    .FirstOrDefault(x => x.ToLowerInvariant().Contains(shaderName));
+            }
+           
+            if (resName is null)
                 throw new FileNotFoundException(
                     $"Unable to find a file with the name \"{shaderName}\" anywhere in the assembly.");
+
             using var tr = new StreamReader(assembly.GetManifestResourceStream(resName)!);
             return FromString(tr.ReadToEnd());
         }
@@ -160,7 +172,8 @@ namespace SukiUI.Utilities.Effects
                 { "iDark", activeVariant == ThemeVariant.Dark ? 1f : 0f },
                 { "iAlpha", alpha }
             };
-            return Effect.ToShader(false, inputs);
+           
+            return Effect.ToShader(inputs);
         }
 
         internal SKShader ToShaderWithCustomUniforms(Func<SKRuntimeEffect,SKRuntimeEffectUniforms> uniformFactory, float timeSeconds, Rect bounds,
@@ -170,7 +183,7 @@ namespace SukiUI.Utilities.Effects
             uniforms.Add("iResolution", new[] { (float)bounds.Width, (float)bounds.Height, 0f });
             uniforms.Add("iTime", timeSeconds * animationScale);
             uniforms.Add("iAlpha", alpha);
-            return Effect.ToShader(false, uniforms);
+            return Effect.ToShader(uniforms);
         }
         
         /// <summary>

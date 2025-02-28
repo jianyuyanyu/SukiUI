@@ -27,6 +27,7 @@
     <PackageReference Include="SkiaSharp" />
     <PackageReference Include="Avalonia.Controls.DataGrid" />
     <PackageReference Include="Avalonia.Themes.Simple" />
+    <PackageReference Include="System.Linq.Dynamic.Core" />
   </ItemGroup>
 
   <ItemGroup>
@@ -85,6 +86,14 @@
     </Compile>
     <Compile Update="Controls\Experimental\ChatUI\ChatUI.axaml.cs">
       <DependentUpon>ChatUI.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Locale\en-US.axaml.cs">
+      <DependentUpon>en-US.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Locale\zh-CN.axaml.cs">
+      <DependentUpon>zh-CN.axaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
